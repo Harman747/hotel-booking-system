@@ -1,10 +1,12 @@
-FROM openjdk:17
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
 COPY . .
 
-RUN chmod +x mvnw || true
-RUN ./mvnw clean package || mvn clean package
+RUN apt-get update && apt-get install -y maven
+RUN mvn clean package -DskipTests
 
-CMD ["sh", "-c", "java -jar target/*.jar"]
+EXPOSE 10000
+
+CMD ["java", "-jar", "target/*.jar"]
